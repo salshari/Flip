@@ -5,14 +5,14 @@ using namespace std;
 
 class Card
 {
-    private: 
+    public: 
+
         // card value
         string value;
 
         // card suit. either a club, diamond, heart, or spade
         string suit;
 
-    public: 
         // constructor
         Card(string val, string st) : value(val), suit(st) {}
 
@@ -81,11 +81,10 @@ class Node
 
 class Deck
 {
-    private:
-        // object of Node class points to first card in deck
+    public:
+         // object of Node class points to first card in deck
         Node* head;
 
-    public:
         Deck(): head(nullptr)
         {
             // initiate the options for the suits of the cards
@@ -183,12 +182,144 @@ class Deck
             // new node that contains the card passed through the argument of the function
             Node* newNode = new Node(c);
 
-            // sets next pointer to the current head
-            newNode -> next = head;
+            // if empty, new node becomes the head
+            if (!head) 
+            {
+                head = newNode;
+            }
 
-            // updates the head pointer to point to node with card object
-            head = newNode;
+            else 
+            {
+                Node* lastNode = head;
+
+                while (lastNode->next)
+                {
+                    lastNode = lastNode -> next;
+                }
+
+                lastNode -> next = newNode;
+            }
 
         }
        
 };
+
+void playFlip()
+{
+    // create Deck object
+    Deck deck;
+
+    // shuffle the deck three times
+    deck.shuffle();
+    deck.shuffle();
+    deck.shuffle();
+
+    int score = 0;
+
+    string n;
+
+    bool gameState = true;
+
+    int z = 24; 
+
+    while (gameState==true)
+    {
+        // print out the 24 top shuffled cards of the deck
+        cout << "Your top 24 cards: " << endl; 
+        Node* current = deck.head; 
+        for (int i = 0; i < z && current != nullptr; i++) 
+        {   
+            cout << current->data << endl; 
+            current = current->next; 
+        } 
+
+        cout << endl;
+
+        // print out the remaining cards of the deck
+        cout << "Remaining cards in deck: " << endl; 
+        while (current != nullptr) 
+        { 
+            cout << current->data << endl; 
+            current = current->next; 
+        }
+        
+        cout << "Enter Y to continue playing and N to stop. "<< endl;
+        cin >> n;
+
+        if (n=="N" or n=="n")
+        {
+            cout << "Your final score is: " << score << endl;
+            exit(1);
+        }
+
+        else if(n=="Y" or n=="y") 
+        {
+                // create new Card object
+                Card cardFlipped = deck.deal();
+
+                cout << "The card you have flipped is: " << cardFlipped << endl;
+
+                // if the card flipped has a value of 7, divide the score by 2
+                if (cardFlipped.value == "7")
+                {
+                    score = score/2;
+                }
+
+                // if the card flipped has a value of Ace, add 10 to the score
+                else if (cardFlipped.value == "Ace")
+                {
+                    score += 10;
+                }
+                
+                // if the card flipped has a value of King or Queen or Jack, add 5 to the score
+                else if (cardFlipped.value == "King" || cardFlipped.value =="Queen" || cardFlipped.value =="Jack")
+                {
+                    score += 5;
+                }
+
+                // if the card flipped has a value of 8, 9, or, 10, add nothing to the score
+                else if (cardFlipped.value == "8" || cardFlipped.value == "9" || cardFlipped.value == "10")
+                {
+                    score += 0;
+                }
+
+                // if the card flipped has a value of 2-6, reset the user score to 0
+                else if (cardFlipped.value == "2" || cardFlipped.value == "3" || cardFlipped.value == "4" || cardFlipped.value == "5" || cardFlipped.value == "6")
+                {
+                    score = 0;
+                }
+
+                // if the card flipped has a suit of Hearts, add 1 to the score
+                if (cardFlipped.suit == "Hearts")
+                {
+                    score += 1;
+                }
+    
+                
+            cout << "Your score is: " << score << endl;
+
+            // add the card flipped to the bottom of the deck
+            deck.replace(cardFlipped);
+
+            z--;
+
+        }
+
+        if (z == 0)
+        {
+            cout << "You have flipped the last card." << endl;
+            break;
+        }
+
+    }
+
+    cout << "The game has ended! Thank you for playing!" << endl;
+}
+
+
+int main() 
+{ 
+    playFlip();
+    return 0;
+
+}
