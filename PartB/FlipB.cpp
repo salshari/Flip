@@ -192,16 +192,3 @@ class Deck
         }
        
 };
-
-int main() 
-{
-    //creates deck object    
-    Deck card_deck;
-    //prints deck before shuffle
-    cout<<"Before Shuffle Values: "<<endl;
-    cout<<card_deck<<endl;
-    //prints deck after shuffle
-    card_deck.shuffle();
-    cout<<"After Shuffle Values: "<<endl;
-    cout<<card_deck<<endl;
-}
