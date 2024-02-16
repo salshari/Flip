@@ -16,6 +16,9 @@ class Card
         // constructor
         Card(string val, string st) : value(val), suit(st) {}
 
+        // copy constructor 
+        Card(const Card& other) : value(other.value), suit(other.suit) {}
+
         // a function to set and update the value of the card
         void setValue(string val) 
         {
@@ -45,6 +48,22 @@ class Card
         {
             os << card.value << " of " << card.suit;
             return os;
+        }
+
+        // overloaded assignment operator whose argument is a const reference to another Card object
+        Card& operator=(const Card& other)
+        {
+            // check that the object is not itself
+            if (this != &other) 
+            {
+                // copy the value from other object to the current object (this)
+                value = other.value;
+
+                // copy the suit from other object to the current object (this)
+                suit = other.suit;
+            }
+
+            return *this;
         }
 
 };
