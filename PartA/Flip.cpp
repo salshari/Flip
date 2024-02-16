@@ -150,6 +150,46 @@ class Deck
             }
             return out;
         }
+
+        Card deal()
+        {
+            // checks if the deck is empty, prints an error message and exits if so
+            if(!head)
+            {
+                cout << "Deck is empty." << endl;
+                exit(1);
+            }
+
+            // points to the top card in the deck
+            Node* topOfDeck = head;
+
+            // moves the pointer to the next card in the deck
+            head = head -> next;
+
+            // saves the card data to a card object 'topCard'
+            Card topCard = topOfDeck ->data;
+
+            // deallocates node that points to top card in the deck
+            delete topOfDeck;
+
+            // returns the top card in the deck
+            return topCard;
+
+        }
+
+        //function passed object of type card
+        void replace(const Card& c)
+        {
+            // new node that contains the card passed through the argument of the function
+            Node* newNode = new Node(c);
+
+            // sets next pointer to the current head
+            newNode -> next = head;
+
+            // updates the head pointer to point to node with card object
+            head = newNode;
+
+        }
        
 };
 
